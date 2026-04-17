@@ -17,6 +17,7 @@ public class ProdutoRequest {
     private String valorUnd;
     private String und;
     private String tipo;
+    private Long qtd;
 
     public Produto toProduto() {
         Produto produto = new Produto();
@@ -25,7 +26,7 @@ public class ProdutoRequest {
         produto.setValorUnd(new java.math.BigDecimal(this.valorUnd));
         produto.setUnd(this.und);
         produto.setTipo(this.tipo);
-        produto.setQtd(1L);
+        produto.setQtd(this.qtd);
         return produto;
     }
 }
