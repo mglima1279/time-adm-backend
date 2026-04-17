@@ -1,0 +1,12 @@
+create table produto(
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome varchar(255) NOT NULL,
+    caracteristicas TEXT NULL,
+    valor_und DECIMAL(10,2) NOT NULL,
+    und VARCHAR(10) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    qtd DECIMAL(10,3) NOT NULL,
+    valor_total DECIMAL(12,2) NOT NULL,
+    valor_imposto DECIMAL(12,2) NOT NULL,
+    valor_final DECIMAL(12,2) NOT NULL
+);
