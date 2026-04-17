@@ -1,6 +1,6 @@
 # Documentação da API  
   
-**URL Base (Padrão):** `http://localhost:8080/produtos`  
+**URL Base (Padrão):** `http://localhost:8081/produtos`  
   
 ## Regras de Negócio: Cálculo de Impostos  
 Ao criar ou atualizar um produto, o sistema calcula os valores automaticamente com base no campo `tipo`:  
@@ -17,7 +17,7 @@ Ao criar ou atualizar um produto, o sistema calcula os valores automaticamente c
 Cria um novo produto e retorna os dados salvos com os cálculos de impostos e totais já aplicados.  
   
 * **Método:** `POST`  
-* **Rota:** `/` (ex: `http://localhost:8080/produtos`)  
+* **Rota:** `/` (ex: `http://localhost:8081/produtos`)  
 * **Headers:** `Content-Type: application/json`  
   
 **Body (Request):**  
@@ -53,7 +53,7 @@ Cria um novo produto e retorna os dados salvos com os cálculos de impostos e to
 Retorna os detalhes de um produto específico cadastrado no banco de dados.  
   
 * **Método:** `GET`  
-* **Rota:** `/{id}` (ex: `http://localhost:8080/produtos/1`)  
+* **Rota:** `/{id}` (ex: `http://localhost:8081/produtos/1`)  
   
 **Response (Sucesso - 200 OK):**  
 ```json  
@@ -79,7 +79,7 @@ Atualiza os dados de um produto existente.
 > **Atenção:** De acordo com a lógica atual da API (no `ProdutoService`), este endpoint **atualiza apenas a quantidade (`qtd`)** do produto. Os cálculos de valores e impostos são refeitos automaticamente para a nova quantidade com base no valor unitário e tipo já cadastrados.  
   
 * **Método:** `PUT`  
-* **Rota:** `/{id}` (ex: `http://localhost:8080/produtos/1`)  
+* **Rota:** `/{id}` (ex: `http://localhost:8081/produtos/1`)  
 * **Headers:** `Content-Type: application/json`  
   
 **Body (Request):**  
@@ -111,7 +111,7 @@ Atualiza os dados de um produto existente.
 Remove permanentemente um produto do banco de dados pelo seu ID.  
   
 * **Método:** `DELETE`  
-* **Rota:** `/{id}` (ex: `http://localhost:8080/produtos/1`)  
+* **Rota:** `/{id}` (ex: `http://localhost:8081/produtos/1`)  
   
 **Response (Sucesso - 204 No Content / 200 OK):**  
 Sem corpo de resposta (vazio).  
