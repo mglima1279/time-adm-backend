@@ -38,7 +38,7 @@ public class Produto {
     private String tipo;
 
     @Column(nullable = false, precision = 10, scale = 3, name = "qtd")
-    private Double qtd;
+    private long qtd;
 
     @Column(nullable = false, precision = 12, scale = 2, name = "valor_total")
     private BigDecimal valorTotal;
