@@ -1,5 +1,7 @@
 package com.imposto.adm.dto;
 
+import java.math.BigDecimal;
+
 import com.imposto.adm.entities.Produto;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +16,7 @@ import lombok.Setter;
 public class ProdutoRequest {
     private String nome;
     private String caracteristicas;
-    private String valorUnd;
+    private BigDecimal valorUnd;
     private String und;
     private String tipo;
     private Long qtd;
@@ -23,7 +25,7 @@ public class ProdutoRequest {
         Produto produto = new Produto();
         produto.setNome(this.nome);
         produto.setCaracteristicas(this.caracteristicas);
-        produto.setValorUnd(new java.math.BigDecimal(this.valorUnd));
+        produto.setValorUnd(this.valorUnd);
         produto.setUnd(this.und);
         produto.setTipo(this.tipo);
         produto.setQtd(this.qtd);

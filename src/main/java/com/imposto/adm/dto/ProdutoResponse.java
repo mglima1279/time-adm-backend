@@ -1,5 +1,7 @@
 package com.imposto.adm.dto;
 
+import java.math.BigDecimal;
+
 import com.imposto.adm.entities.Produto;
 
 import lombok.AllArgsConstructor;
@@ -15,21 +17,24 @@ public class ProdutoResponse {
     private Long id;
     private String nome;
     private String caracteristicas;
-    private String valorUnd;
+    private BigDecimal valorUnd;
     private String und;
     private Long qtd;
-    private String valorTotal;
-    private String valorImposto;
-    private String valorFinal;
+    private BigDecimal valorTotal;
+    private BigDecimal valorImposto;
+    private BigDecimal valorFinal;
 
     public static ProdutoResponse fromEntity(Produto produto) {
         ProdutoResponse response = new ProdutoResponse();
         response.setId(produto.getId());
         response.setNome(produto.getNome());
         response.setCaracteristicas(produto.getCaracteristicas());
-        response.setValorUnd(produto.getValorUnd().toString());
+        response.setValorUnd(produto.getValorUnd());
         response.setUnd(produto.getUnd());
         response.setQtd(produto.getQtd());
+        response.setValorTotal(produto.getValorTotal());
+        response.setValorImposto(produto.getValorImposto());
+        response.setValorFinal(produto.getValorFinal());
         return response;
     }
 }
