@@ -33,11 +33,3 @@ public class ProdutoResponse {
         return response;
     }
 }
-
-/* Produto;
-o Valor unitário do produto;
-o Unidade
-o Um campo input para informar a quantidade;
-o Valor Total do item;
-o Valor imposto;
-o Valor final. */
