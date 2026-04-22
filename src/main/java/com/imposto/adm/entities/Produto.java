@@ -39,13 +39,4 @@ public class Produto {
 
     @Column(name = "qtd")
     private long qtd;
-
-    @Column(name = "valor_total")
-    private BigDecimal valorTotal;
-
-    @Column(name = "valor_imposto")
-    private BigDecimal valorImposto;
-
-    @Column(name = "valor_final")
-    private BigDecimal valorFinal;
 }

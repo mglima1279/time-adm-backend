@@ -20,9 +20,6 @@ public class ProdutoResponse {
     private BigDecimal valorUnd;
     private String und;
     private Long qtd;
-    private BigDecimal valorTotal;
-    private BigDecimal valorImposto;
-    private BigDecimal valorFinal;
 
     public static ProdutoResponse fromEntity(Produto produto) {
         ProdutoResponse response = new ProdutoResponse();
@@ -32,9 +29,6 @@ public class ProdutoResponse {
         response.setValorUnd(produto.getValorUnd());
         response.setUnd(produto.getUnd());
         response.setQtd(produto.getQtd());
-        response.setValorTotal(produto.getValorTotal());
-        response.setValorImposto(produto.getValorImposto());
-        response.setValorFinal(produto.getValorFinal());
         return response;
     }
 }
