@@ -1,5 +1,7 @@
 package com.imposto.adm.controllers;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,12 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<ProdutoResponse> create(@RequestBody ProdutoRequest request) {
-        produtoService.create(request);
-
         return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.create(request)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProdutoResponse>> getAll() {
+        return ResponseEntity.ok(produtoService.getAll().stream().map(ProdutoResponse::fromEntity).toList());
     }
 
     @GetMapping("/{id}")
