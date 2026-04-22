@@ -20,6 +20,7 @@ public class ProdutoResponse {
     private BigDecimal valorUnd;
     private String und;
     private Long qtd;
+    private String tipo;
 
     public static ProdutoResponse fromEntity(Produto produto) {
         ProdutoResponse response = new ProdutoResponse();
@@ -29,6 +30,7 @@ public class ProdutoResponse {
         response.setValorUnd(produto.getValorUnd());
         response.setUnd(produto.getUnd());
         response.setQtd(produto.getQtd());
+        response.setTipo(produto.getTipo());
         return response;
     }
 }
