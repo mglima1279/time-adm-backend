@@ -1,6 +1,7 @@
 package com.imposto.adm.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,10 @@ public class ProdutoService {
         calcValues(produto);
 
         return produtoRepository.save(produto);
+    }
+
+    public List<Produto> getAll() {
+        return produtoRepository.findAll();
     }
 
     public Produto getById(Long id) {
