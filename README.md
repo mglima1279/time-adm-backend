@@ -1,117 +1,207 @@
-# Documentação da API  
-  
-**URL Base (Padrão):** `http://localhost:8081/produtos`  
-  
-## Regras de Negócio: Cálculo de Impostos  
-Ao criar ou atualizar um produto, o sistema calcula os valores automaticamente com base no campo `tipo`:  
-  
-* **Tipo "1":** Isento (0% de imposto)  
-* **Tipo "2":** 8% de imposto  
-* **Tipo "3":** 10% de imposto  
-* **Tipo "4":** 12% de imposto  
-* **Tipo "5":** 17% de imposto  
-  
----  
-  
-## 1. Criar Novo Produto  
-Cria um novo produto e retorna os dados salvos com os cálculos de impostos e totais já aplicados.  
-  
-* **Método:** `POST`  
-* **Rota:** `/` (ex: `http://localhost:8081/produtos`)  
-* **Headers:** `Content-Type: application/json`  
-  
-**Body (Request):**  
-```json  
-{  
-  "nome": "Parafuso Sextavado",  
-  "caracteristicas": "Aço inoxidável, 8mm x 50mm",  
-  "valorUnd": 2.50,  
-  "und": "unidade",  
-  "tipo": "2",  
-  "qtd": 150  
-}  
-```  
-  
-**Response (Sucesso - 201 Created / 200 OK):**  
-```json  
-{  
-  "id": 1,  
-  "nome": "Parafuso Sextavado",  
-  "caracteristicas": "Aço inoxidável, 8mm x 50mm",  
-  "valorUnd": 2.50,  
-  "und": "unidade",  
-  "qtd": 150,  
-  "valorTotal": 375.00,  
-  "valorImposto": 30.00,  
-  "valorFinal": 405.00  
-}  
-```  
-  
----  
-  
-## 2. Buscar Produto por ID  
-Retorna os detalhes de um produto específico cadastrado no banco de dados.  
-  
-* **Método:** `GET`  
-* **Rota:** `/{id}` (ex: `http://localhost:8081/produtos/1`)  
-  
-**Response (Sucesso - 200 OK):**  
-```json  
-{  
-  "id": 1,  
-  "nome": "Parafuso Sextavado",  
-  "caracteristicas": "Aço inoxidável, 8mm x 50mm",  
-  "valorUnd": 2.50,  
-  "und": "unidade",  
-  "qtd": 150,  
-  "valorTotal": 375.00,  
-  "valorImposto": 30.00,  
-  "valorFinal": 405.00  
-}  
-```  
-**Response (Erro - 404 Not Found / 500 Internal Server Error):**  
-Lança uma `RuntimeException` informando "Produto não encontrado".  
-  
----  
-  
-## 3. Atualizar Produto (Estoque)  
-Atualiza os dados de um produto existente.  
-> **Atenção:** De acordo com a lógica atual da API (no `ProdutoService`), este endpoint **atualiza apenas a quantidade (`qtd`)** do produto. Os cálculos de valores e impostos são refeitos automaticamente para a nova quantidade com base no valor unitário e tipo já cadastrados.  
-  
-* **Método:** `PUT`  
-* **Rota:** `/{id}` (ex: `http://localhost:8081/produtos/1`)  
-* **Headers:** `Content-Type: application/json`  
-  
-**Body (Request):**  
-```json  
-{  
-  "qtd": 200  
-}  
-```  
-*(Nota: Você pode enviar o JSON completo do `ProdutoRequest`, mas a API irá considerar apenas o campo `qtd` para a atualização no banco).*  
-  
-**Response (Sucesso - 200 OK):**  
-```json  
-{  
-  "id": 1,  
-  "nome": "Parafuso Sextavado",  
-  "caracteristicas": "Aço inoxidável, 8mm x 50mm",  
-  "valorUnd": 2.50,  
-  "und": "unidade",  
-  "qtd": 200,  
-  "valorTotal": 500.00,  
-  "valorImposto": 40.00,  
-  "valorFinal": 540.00  
-}  
-```  
-  
----  
-  
-## 4. Deletar Produto  
-Remove permanentemente um produto do banco de dados pelo seu ID.  
-  
-* **Método:** `DELETE`  
-* **Rota:** `/{id}` (ex: `http://localhost:8081/produtos/1`)  
-  
-**Response (Sucesso - 204 No Content / 200 OK):**  
-Sem corpo de resposta (vazio).  
+# 📦 API de Produtos
+
+**URL Base:** `http://localhost:8081/produtos`
+
+---
+
+## 🔄 Observações Importantes
+
+* A API suporta operações completas: **CRUD + PATCH (atualização parcial)**
+* O campo `tipo` é armazenado e retornado, porém **não há cálculo de impostos no response**
+* O retorno contém apenas os dados básicos do produto
+* Tratamento de erros simples via `ResponseEntity`
+
+---
+
+## 📌 Estrutura do Produto
+
+### 🔸 Request (`ProdutoRequest`)
+
+```json
+{
+  "nome": "Parafuso Sextavado",
+  "caracteristicas": "Aço inoxidável, 8mm x 50mm",
+  "valorUnd": 2.50,
+  "und": "unidade",
+  "tipo": "2",
+  "qtd": 150
+}
+```
+
+### 🔸 Response (`ProdutoResponse`)
+
+```json
+{
+  "id": 1,
+  "nome": "Parafuso Sextavado",
+  "caracteristicas": "Aço inoxidável, 8mm x 50mm",
+  "valorUnd": 2.50,
+  "und": "unidade",
+  "qtd": 150,
+  "tipo": "2"
+}
+```
+
+---
+
+# 🚀 Endpoints
+
+---
+
+## 1. ➕ Criar Produto
+
+Cria um novo produto.
+
+* **Método:** `POST`
+* **Rota:** `/`
+* **Headers:** `Content-Type: application/json`
+
+### ✅ Response
+
+* `200 OK` → Produto criado com sucesso
+* `400 Bad Request` → Erro na requisição
+
+---
+
+## 2. 📄 Listar Todos os Produtos
+
+Retorna todos os produtos cadastrados.
+
+* **Método:** `GET`
+* **Rota:** `/`
+
+### ✅ Response
+
+```json
+[
+  {
+    "id": 1,
+    "nome": "Produto A",
+    "caracteristicas": "Descrição",
+    "valorUnd": 10.00,
+    "und": "unidade",
+    "qtd": 50,
+    "tipo": "1"
+  }
+]
+```
+
+* `200 OK`
+
+---
+
+## 3. 🔍 Buscar Produto por ID
+
+Retorna um produto específico.
+
+* **Método:** `GET`
+* **Rota:** `/{id}`
+
+### ✅ Response
+
+* `200 OK` → Produto encontrado
+* `404 Not Found` → Produto não encontrado
+
+---
+
+## 4. ✏️ Atualização Parcial (PATCH)
+
+Atualiza apenas os campos enviados.
+
+* **Método:** `PATCH`
+* **Rota:** `/{id}`
+
+### 📥 Body (exemplo)
+
+```json
+{
+  "qtd": 200
+}
+```
+
+### ✅ Response
+
+* `200 OK` → Produto atualizado
+* `404 Not Found` → Produto não encontrado
+
+---
+
+## 5. 🔁 Atualização Completa (PUT)
+
+Atualiza todos os dados do produto.
+
+* **Método:** `PUT`
+* **Rota:** `/{id}`
+
+### 📥 Body
+
+Mesmo formato do `ProdutoRequest`
+
+### ✅ Response
+
+* `200 OK` → Produto atualizado
+* `404 Not Found` → Produto não encontrado
+
+---
+
+## 6. ❌ Deletar Produto
+
+Remove um produto do banco.
+
+* **Método:** `DELETE`
+* **Rota:** `/{id}`
+
+### ✅ Response
+
+* `204 No Content` → Deletado com sucesso
+
+---
+
+# ⚠️ Tratamento de Erros
+
+| Situação               | Status    |
+| ---------------------- | --------- |
+| Requisição inválida    | 400       |
+| Produto não encontrado | 404       |
+| Sucesso                | 200 / 204 |
+
+---
+
+# 🌐 CORS
+
+A API permite requisições de qualquer origem:
+
+```java
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+```
+
+---
+
+# 🧠 Notas Técnicas
+
+* Controller: `ProdutoController`
+* Service: `ProdutoService`
+* DTOs:
+
+  * `ProdutoRequest` → Entrada de dados
+  * `ProdutoResponse` → Saída de dados
+* Conversão feita via método:
+
+```java
+ProdutoResponse.fromEntity(produto)
+```
+
+---
+
+# 📌 Melhorias Futuras (Sugestões)
+
+* Adicionar cálculo de impostos no response
+* Padronizar erros com `@ControllerAdvice`
+* Implementar documentação automática com Swagger/OpenAPI
+* Validações com `@Valid` e Bean Validation
+
+---
+
+# 👨‍💻 Autor
+
+Projeto desenvolvido para fins de estudo e prática com **Spring Boot**.
