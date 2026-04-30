@@ -70,6 +70,7 @@ public class ProdutoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        return ResponseEntity.notFound().build();
+        produtoService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
