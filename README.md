@@ -6,10 +6,10 @@
 
 ## 🔄 Observações Importantes
 
-* A API suporta operações completas: **CRUD + PATCH (atualização parcial)**
-* O campo `tipo` é armazenado e retornado, porém **não há cálculo de impostos no response**
-* O retorno contém apenas os dados básicos do produto
-* Tratamento de erros simples via `ResponseEntity`
+* API com suporte a **CRUD completo + PATCH**
+* **Não há cálculo de impostos no response**
+* Retorno contém apenas dados básicos do produto
+* Tratamento de erros simples com `ResponseEntity`
 
 ---
 
@@ -50,68 +50,127 @@
 
 ## 1. ➕ Criar Produto
 
-Cria um novo produto.
-
 * **Método:** `POST`
 * **Rota:** `/`
-* **Headers:** `Content-Type: application/json`
 
-### ✅ Response
+### 📥 Request
 
-* `200 OK` → Produto criado com sucesso
-* `400 Bad Request` → Erro na requisição
+```http
+POST /produtos
+Content-Type: application/json
+```
+
+```json
+{
+  "nome": "Parafuso Sextavado",
+  "caracteristicas": "Aço inoxidável, 8mm x 50mm",
+  "valorUnd": 2.50,
+  "und": "unidade",
+  "tipo": "2",
+  "qtd": 150
+}
+```
+
+### 📤 Response (200 OK)
+
+```json
+{
+  "id": 1,
+  "nome": "Parafuso Sextavado",
+  "caracteristicas": "Aço inoxidável, 8mm x 50mm",
+  "valorUnd": 2.50,
+  "und": "unidade",
+  "qtd": 150,
+  "tipo": "2"
+}
+```
+
+### ❌ Response (400 Bad Request)
+
+Sem corpo
 
 ---
 
 ## 2. 📄 Listar Todos os Produtos
 
-Retorna todos os produtos cadastrados.
-
 * **Método:** `GET`
 * **Rota:** `/`
 
-### ✅ Response
+### 📥 Request
+
+```http
+GET /produtos
+```
+
+### 📤 Response (200 OK)
 
 ```json
 [
   {
     "id": 1,
     "nome": "Produto A",
-    "caracteristicas": "Descrição",
+    "caracteristicas": "Descrição A",
     "valorUnd": 10.00,
     "und": "unidade",
     "qtd": 50,
     "tipo": "1"
+  },
+  {
+    "id": 2,
+    "nome": "Produto B",
+    "caracteristicas": "Descrição B",
+    "valorUnd": 20.00,
+    "und": "caixa",
+    "qtd": 30,
+    "tipo": "3"
   }
 ]
 ```
-
-* `200 OK`
 
 ---
 
 ## 3. 🔍 Buscar Produto por ID
 
-Retorna um produto específico.
-
 * **Método:** `GET`
 * **Rota:** `/{id}`
 
-### ✅ Response
+### 📥 Request
 
-* `200 OK` → Produto encontrado
-* `404 Not Found` → Produto não encontrado
+```http
+GET /produtos/1
+```
+
+### 📤 Response (200 OK)
+
+```json
+{
+  "id": 1,
+  "nome": "Parafuso Sextavado",
+  "caracteristicas": "Aço inoxidável, 8mm x 50mm",
+  "valorUnd": 2.50,
+  "und": "unidade",
+  "qtd": 150,
+  "tipo": "2"
+}
+```
+
+### ❌ Response (404 Not Found)
+
+Sem corpo
 
 ---
 
 ## 4. ✏️ Atualização Parcial (PATCH)
 
-Atualiza apenas os campos enviados.
-
 * **Método:** `PATCH`
 * **Rota:** `/{id}`
 
-### 📥 Body (exemplo)
+### 📥 Request
+
+```http
+PATCH /produtos/1
+Content-Type: application/json
+```
 
 ```json
 {
@@ -119,41 +178,83 @@ Atualiza apenas os campos enviados.
 }
 ```
 
-### ✅ Response
+### 📤 Response (200 OK)
 
-* `200 OK` → Produto atualizado
-* `404 Not Found` → Produto não encontrado
+```json
+{
+  "id": 1,
+  "nome": "Parafuso Sextavado",
+  "caracteristicas": "Aço inoxidável, 8mm x 50mm",
+  "valorUnd": 2.50,
+  "und": "unidade",
+  "qtd": 200,
+  "tipo": "2"
+}
+```
+
+### ❌ Response (404 Not Found)
+
+Sem corpo
 
 ---
 
 ## 5. 🔁 Atualização Completa (PUT)
 
-Atualiza todos os dados do produto.
-
 * **Método:** `PUT`
 * **Rota:** `/{id}`
 
-### 📥 Body
+### 📥 Request
 
-Mesmo formato do `ProdutoRequest`
+```http
+PUT /produtos/1
+Content-Type: application/json
+```
 
-### ✅ Response
+```json
+{
+  "nome": "Parafuso Atualizado",
+  "caracteristicas": "Aço carbono, 10mm",
+  "valorUnd": 3.00,
+  "und": "unidade",
+  "tipo": "3",
+  "qtd": 300
+}
+```
 
-* `200 OK` → Produto atualizado
-* `404 Not Found` → Produto não encontrado
+### 📤 Response (200 OK)
+
+```json
+{
+  "id": 1,
+  "nome": "Parafuso Atualizado",
+  "caracteristicas": "Aço carbono, 10mm",
+  "valorUnd": 3.00,
+  "und": "unidade",
+  "qtd": 300,
+  "tipo": "3"
+}
+```
+
+### ❌ Response (404 Not Found)
+
+Sem corpo
 
 ---
 
 ## 6. ❌ Deletar Produto
 
-Remove um produto do banco.
-
 * **Método:** `DELETE`
 * **Rota:** `/{id}`
 
-### ✅ Response
+### 📥 Request
 
-* `204 No Content` → Deletado com sucesso
+```http
+DELETE /produtos/1
+```
+
+### 📤 Response (204 No Content)
+
+Sem corpo
 
 ---
 
@@ -164,44 +265,3 @@ Remove um produto do banco.
 | Requisição inválida    | 400       |
 | Produto não encontrado | 404       |
 | Sucesso                | 200 / 204 |
-
----
-
-# 🌐 CORS
-
-A API permite requisições de qualquer origem:
-
-```java
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-```
-
----
-
-# 🧠 Notas Técnicas
-
-* Controller: `ProdutoController`
-* Service: `ProdutoService`
-* DTOs:
-
-  * `ProdutoRequest` → Entrada de dados
-  * `ProdutoResponse` → Saída de dados
-* Conversão feita via método:
-
-```java
-ProdutoResponse.fromEntity(produto)
-```
-
----
-
-# 📌 Melhorias Futuras (Sugestões)
-
-* Adicionar cálculo de impostos no response
-* Padronizar erros com `@ControllerAdvice`
-* Implementar documentação automática com Swagger/OpenAPI
-* Validações com `@Valid` e Bean Validation
-
----
-
-# 👨‍💻 Autor
-
-Projeto desenvolvido para fins de estudo e prática com **Spring Boot**.
