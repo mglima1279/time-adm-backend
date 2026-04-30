@@ -29,7 +29,11 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<ProdutoResponse> create(@RequestBody ProdutoRequest request) {
-        return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.create(request)));
+        try {
+            return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.create(request)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping
@@ -39,23 +43,33 @@ public class ProdutoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoResponse> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.getById(id)));
+        try {
+            return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.getById(id)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProdutoResponse> patchById(@PathVariable Long id, @RequestBody ProdutoRequest request) {
-        return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.patchById(id, request)));
+        try {
+            return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.patchById(id, request)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProdutoResponse> putById(@PathVariable Long id, @RequestBody ProdutoRequest request) {
-        return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.updateById(id, request)));
+        try {
+            return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.updateById(id, request)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        produtoService.deleteById(id);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }

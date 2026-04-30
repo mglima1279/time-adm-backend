@@ -1,5 +1,6 @@
 package com.imposto.adm.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,6 +18,22 @@ public class ProdutoService {
 
     public Produto create(ProdutoRequest request) {
         Produto produto = request.toProduto();
+
+        if (produto.getQtd() <= 0 || produto.getValorUnd().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Quantidade e valor unitário devem ser maiores que zero");
+        }
+        
+        if (produto.getNome() == null || produto.getNome().isEmpty()) {
+            throw new RuntimeException("O nome do produto é obrigatório");
+        }
+
+        if (produto.getUnd() == null || produto.getUnd().isEmpty()) {
+            throw new RuntimeException("A unidade de medida é obrigatória");
+        }
+
+        if (produto.getTipo() == null || produto.getTipo().isEmpty()) {
+            throw new RuntimeException("O tipo do produto é obrigatório");
+        }
 
         return produtoRepository.save(produto);
     }
