@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,12 @@ public class ProdutoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProdutoResponse> updateById(@PathVariable Long id, @RequestBody ProdutoRequest request) {
+    public ResponseEntity<ProdutoResponse> patchById(@PathVariable Long id, @RequestBody ProdutoRequest request) {
+        return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.patchById(id, request)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProdutoResponse> putById(@PathVariable Long id, @RequestBody ProdutoRequest request) {
         return ResponseEntity.ok(ProdutoResponse.fromEntity(produtoService.updateById(id, request)));
     }
 

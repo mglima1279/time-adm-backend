@@ -29,11 +29,37 @@ public class ProdutoService {
         return produtoRepository.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 
+    public Produto patchById(Long id, ProdutoRequest request) {
+        Produto produto = getById(id);
+
+        produto.setQtd(request.getQtd());
+
+        return produtoRepository.save(produto);
+    }
+    
     public Produto updateById(Long id, ProdutoRequest request) {
         Produto produto = getById(id);
-        
-        produto.setQtd(request.getQtd());
-        
+
+        if (request.getNome() != null) {
+            produto.setNome(request.getNome());
+        }
+
+        if (request.getCaracteristicas() != null) {
+            produto.setCaracteristicas(request.getCaracteristicas());
+        }
+
+        if (request.getValorUnd() != null) {
+            produto.setValorUnd(request.getValorUnd());
+        }
+
+        if (request.getUnd() != null) {
+            produto.setUnd(request.getUnd());
+        }
+
+        if (request.getTipo() != null) {
+            produto.setTipo(request.getTipo());
+        }
+
         return produtoRepository.save(produto);
     }
 
